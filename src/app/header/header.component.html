@@ -3,21 +3,23 @@
         <div class="navbar-header">
             <a href="#" class="navbar-brand">Recipe Book</a>
         </div>
+        
         <div class="navbar">
-            <ul class="nav">
+            <ul class="nav ">
                 <li class="nav-item">
-                  <a class="nav-link active" href="#" (click)="onSelect('recipe')">Recipes</a>
+                  <a class="nav-link" routerLink="/recipes" >Recipes</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#" (click)="onSelect('shopping-list')" >Shopping List</a>
+                  <a class="nav-link" routerLink="/shopping-list">Shopping List</a>
                 </li>              
               </ul>
             <ul class="nav navbar-nav navbar-right" style="position: relative;">
-                <a href="#" class="dropdown-toggle" role="button">Manage</a>
+                <a  class="dropdown-toggle" role="button"
+                (click)="toggleShow()">Manage</a>
                 <li class="dropdown" >
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Save Data</a></li>
-                        <li><a href="#">Fetch Data</a></li>
+                    <ul class="dropdown-menu show" *ngIf="isShown">
+                        <li><a>Save Data</a></li>
+                        <li><a>Fetch Data</a></li>
                     </ul>
                 </li>
             </ul>
