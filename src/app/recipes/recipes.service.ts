@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import { ShoppingListService } from './../shopping-list/shopping-list.service';
 import { Recipe } from './recipe.model';
 import { Injectable } from '@angular/core';
@@ -6,33 +7,44 @@ import { Ingredient } from '../shared/ingredient.model';
   providedIn: 'root'
 })
 export class RecipesService {
+
+  recipesChanged = new Subject<Recipe[]>();
   
-  private recipes: Recipe[] = [
-    new Recipe('Paprikaš',
-     'Ukusno bosansko jelo napravljeno od domacih proizvoda',
-      'https://www.recepti.com/img/recipe/41214-krompir-paprikas-sa-junetinom.jpg',
-      [
-        new Ingredient("Paprika", 7),
-        new Ingredient("Mljeveno meso", 1)
-      ]),
-      new Recipe('Burger',
-      'Hamburger napravljen po posebnom receptu',
-       'https://www.recepti.com/img/recipe/41214-krompir-paprikas-sa-junetinom.jpg',[
-        new Ingredient("Hljeb", 2),
-        new Ingredient("Pljeskavica", 1)
-      ])
-   
-  ];
+  private recipes: Recipe[]= [];
+
+  constructor(private slService:ShoppingListService) { }
+
+  addRecipe(recipe: Recipe){
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  updateRecipe(index: number, newRecipe: Recipe){
+    this.recipes[index] = newRecipe;
+    this.recipesChanged.next(this.recipes.slice());
+
+  }
 
   getRecipes(){
     return this.recipes.slice();
   }
 
+  setRecipes(recipes: Recipe[]){
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
+  }
   getRecipe(index: number){
     return this.recipes[index];
   }
+
   addIngrToShopList(ingredients:Ingredient[]){
     this.slService.addIngredients(ingredients);
   }
-  constructor(private slService:ShoppingListService) { }
+
+  deleteRecipe(index: number){
+    this.recipes.splice(index, 1);
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  
 }
